@@ -1,0 +1,7 @@
+#language: haskell
+services:
+- docker
+before_install:
+- docker pull haskell
+script:
+-  docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc -O2 --make Proj1test
