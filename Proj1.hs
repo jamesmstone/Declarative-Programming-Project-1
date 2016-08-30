@@ -7,10 +7,10 @@ feedback :: [Card]->[Card]->Feedback
 feedback target guess = (feedback1 ,feedback2 ,feedback3,feedback4,feedback5)
   where
   feedback1 = length(target `intersect` guess)
-  feedback2 = length(filter (< (minimum guess)) target)
-  feedback3 = 0
-  feedback4 = length(filter (> (maximum guess)) target)
-  feedback5 = 0
+  feedback2 = length(filter (< (minimum (map rank guess))) (map rank target))
+  feedback3 = length(nub((map rank target) `intersect` (map rank guess)))
+  feedback4 = length(filter (> (maximum (map rank guess))) (map rank target))
+  feedback5 = length(nub((map suit target) `intersect` (map suit guess)))
 
 
 initialGuess::Int -> ([Card], GameState)
