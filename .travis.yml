@@ -4,4 +4,9 @@ services:
 before_install:
 - docker pull haskell
 script:
--  docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc -O2 --make Proj1test
+- docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc -O2 --make Proj1test
+- ./Proj1test AH 2C 3D 4S
+- ./Proj1test AH 2C 3D
+- ./Proj1test AH 2C
+- ./Proj1test AH 2H 3H 4H
+- ./Proj1test AH AC AD AS
