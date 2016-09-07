@@ -21,7 +21,8 @@ eqSpace numItems list = [list!!x | x<-eqSpace' numItems listLength] where
     doubleNumItemsWanted = fromIntegral numItemsWanted :: Double
 
 initialGuess::Int -> ([Card], GameState)
-initialGuess numCards = ((eqSpace numCards ([minBound..maxBound]::[Card])),(GameState [] []))
+initialGuess numCards = ((eqSpace numCards allCards),(GameState [] [])) where
+  allCards = [minBound..maxBound]::[Card]
 
 nextGuess:: ([Card], GameState)->Feedback-> ([Card], GameState)
 nextGuess = undefined
