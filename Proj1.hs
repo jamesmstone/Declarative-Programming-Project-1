@@ -7,16 +7,16 @@ feedback :: [Card]->[Card]->Feedback
 feedback target guess = (feedback1 ,feedback2 ,feedback3,feedback4,feedback5)
   where
   feedback1 = length(target `intersect` guess)
-  feedback2 = length(filter (< (minimum (map rank guess))) (map rank target))
-  feedback3 = length(nub((map rank target) `intersect` (map rank guess)))
-  feedback4 = length(filter (> (maximum (map rank guess))) (map rank target))
-  feedback5 = length(nub((map suit target) `intersect` (map suit guess)))
+  feedback2 = length(filter (< minimum (map rank guess)) (map rank target))
+  feedback3 = length(nub(map rank target `intersect` map rank guess))
+  feedback4 = length(filter (> maximum (map rank guess)) (map rank target))
+  feedback5 = length(nub(map suit target `intersect` map suit guess))
 
 
-eqSpace numItems list = [list!!x | x<-(eqSpace' numItems listLength)] where
+eqSpace numItems list = [list!!x | x<-eqSpace' numItems listLength] where
   listLength = length list
   eqSpace' :: Int->Int->[Int]
-  eqSpace' numItemsWanted totalItems = [(round((doubleTotalItems/(doubleNumItemsWanted + 1.0))) * multiple )-1| multiple<-[1..numItemsWanted]] where
+  eqSpace' numItemsWanted totalItems = [(round(doubleTotalItems/(doubleNumItemsWanted + 1.0)) * multiple )-1| multiple<-[1..numItemsWanted]] where
     doubleTotalItems = fromIntegral totalItems :: Double
     doubleNumItemsWanted = fromIntegral numItemsWanted :: Double
 
