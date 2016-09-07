@@ -12,7 +12,7 @@ feedback target guess = (feedback1 ,feedback2 ,feedback3,feedback4,feedback5)
   feedback4 = length(filter (> maximum (map rank guess)) (map rank target))
   feedback5 = length(nub(map suit target `intersect` map suit guess))
 
-
+eqSpace :: Int -> [t] -> [t]
 eqSpace numItems list = [list!!x | x<-eqSpace' numItems listLength] where
   listLength = length list
   eqSpace' :: Int->Int->[Int]
@@ -21,8 +21,7 @@ eqSpace numItems list = [list!!x | x<-eqSpace' numItems listLength] where
     doubleNumItemsWanted = fromIntegral numItemsWanted :: Double
 
 initialGuess::Int -> ([Card], GameState)
-initialGuess = undefined
--- initialGuess numCards = (eqSpace numCards ([minBound..maxBound]::[Card])) (GameState [[]] [])
+initialGuess numCards = ((eqSpace numCards ([minBound..maxBound]::[Card])),(GameState [] []))
 
 nextGuess:: ([Card], GameState)->Feedback-> ([Card], GameState)
 nextGuess = undefined
