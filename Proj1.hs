@@ -29,3 +29,4 @@ nextGuess = undefined
 
 type Feedback = (Int, Int, Int, Int, Int)
 data GameState = GameState [[Card]] [Feedback]
+  deriving (Show)
