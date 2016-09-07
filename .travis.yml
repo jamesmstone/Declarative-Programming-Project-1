@@ -5,8 +5,9 @@ before_install:
 - docker pull haskell
 - docker pull jamesmstone/hlint
 script:
-- docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc -O2 --make Proj1test
 - docker run --rm -v"$(pwd)":/hlint -w/hlint jamesmstone/hlint ./
+- docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc -O2 --make Proj1testJames && ./Proj1testJames
+- docker run -it --rm -v"$(pwd)":/haskell -w/haskell haskell ghc -O2 --make Proj1test
 - ./Proj1test AH 2C 3D 4S
 - ./Proj1test AH 2C 3D
 - ./Proj1test AH 2C
