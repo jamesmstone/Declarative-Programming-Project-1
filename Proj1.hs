@@ -13,11 +13,19 @@ feedback target guess = (feedback1 ,feedback2 ,feedback3,feedback4,feedback5)
   feedback5 = length(nub((map suit target) `intersect` (map suit guess)))
 
 
+eqSpace numItems list = [list!!x | x<-(eqSpace' numItems listLength)] where
+  listLength = length list
+  eqSpace' :: Int->Int->[Int]
+  eqSpace' numItemsWanted totalItems = [(round((doubleTotalItems/(doubleNumItemsWanted + 1.0))) * multiple )-1| multiple<-[1..numItemsWanted]] where
+    doubleTotalItems = fromIntegral totalItems :: Double
+    doubleNumItemsWanted = fromIntegral numItemsWanted :: Double
+
 initialGuess::Int -> ([Card], GameState)
 initialGuess = undefined
+-- initialGuess numCards = (eqSpace numCards ([minBound..maxBound]::[Card])) (GameState [[]] [])
 
-nextGuess:: ([Card], GameState)->(Int, Int, Int, Int, Int)-> ([Card], GameState)
+nextGuess:: ([Card], GameState)->Feedback-> ([Card], GameState)
 nextGuess = undefined
 
-data GameState = GameState {pastGuesses::[[Card]], pastFeedback::[(Int, Int, Int, Int, Int)]}
 type Feedback = (Int, Int, Int, Int, Int)
+data GameState = GameState [[Card]] [Feedback]
