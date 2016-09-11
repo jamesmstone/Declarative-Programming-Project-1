@@ -63,46 +63,18 @@ initialGuess numCards = (space numCards allCards, combos numCards allCards) wher
   combos 0 _ = [[]]
   combos n xs = [ y:ys | y:xs' <- tails xs, ys <- combos (n-1) xs']
 
--- eqSpace :: Int -> [t] -> [t]
--- -- returns numItems from a list, where the items are equally spaced out from
--- -- each other.
--- eqSpace numItems list
---   | numItems > listLength = error "can't return more items then given"
---   | otherwise  = [list!!x | x<-eqSpace' numItems listLength]
---   where
---   listLength = length list
---
-eqSpace' :: Int->Int->[Int]
-eqSpace' numItemsWanted totalItems = [(round(dTotalItems/(dNumItemsWanted + 1.0)) * multiple )-1| multiple<-[1..numItemsWanted]] where
-  dTotalItems = fromIntegral totalItems :: Double
-  dNumItemsWanted = fromIntegral numItemsWanted :: Double
-
-
+space:: Int ->[a]->[a]
+-- returns n items from lst such that the n items are equally spaced
 space num lst = map fst $ filter ((`elem` wantedIndexes).snd) indexed where
       indexed = zip lst [0..]
       len = length lst
-      wantedIndexes = eqSpace' num len
---
--- space2 :: Int -> [t] -> [t]
--- space2 num lst = map fst $ filter ((\x-> x `mod` dist == 0).snd) indexed where
---     indexed = zip lst [1..]
---     dist = round (len/(dNum + 1.0))
---     len = fromIntegral (length lst) :: Double
---     dNum = fromIntegral num :: Double
-
-
--- space3 :: Int -> [t] -> [t]
--- space3 num lst
---    | False =  limEvery dist (tail lst)
---    | otherwise = limEvery dist lst
---    where
---     dist = round (len/(dNum + 1.0))
---     len = fromIntegral (length lst) :: Double
---     dNum = fromIntegral num :: Double
---     limEvery n total xs = case drop (n-1) xs of
---                   (y:ys) -> y : limEvery n total ys
---                   [] -> []
-
+      wantedIndexes = spaceInt num len
+      spaceInt :: Int->Int->[Int]
+      spaceInt numItemsWanted totalItems = [
+        (round(dTotalItems/(dNumItemsWanted + 1.0)) * multiple )-1
+        | multiple<-[1..numItemsWanted]] where
+          dTotalItems = fromIntegral totalItems :: Double
+          dNumItemsWanted = fromIntegral numItemsWanted :: Double
 
 
 allCards :: [Card]
@@ -110,16 +82,18 @@ allCards :: [Card]
 allCards = [minBound..maxBound]::[Card]
 
 nextGuess:: ([Card], GameState)->Feedback-> ([Card], GameState)
--- nextGuess = undefined
--- nextGuess (lGuess, possibleSelections) (fMatches,fLowerRank,fSameRank,fHigherRank,fSameSuit) = (head(eqSpace cardsToGuess updatedPossibleSelections),updatedPossibleSelections) where
-nextGuess (lGuess, possibleSelections) (fMatches,fLowerRank,fSameRank,fHigherRank,fSameSuit) = (head updatedPossibleSelections,updatedPossibleSelections) where
-  cardsToGuess = length lGuess
-  updatedPossibleSelections =   filter (\x->
-      let (xMatches,xLowerRank,xSameRank,xHigherRank,xSameSuit) = feedback x lGuess in
-      x           /= lGuess &&       -- the last guess isn't a possible solution
-      xMatches    == fMatches &&     -- the # matches
-      xLowerRank  == fLowerRank &&
-      xSameRank   == fSameRank &&
-      xHigherRank == fHigherRank &&
-      xSameSuit   == fSameSuit
-    ) possibleSelections
+nextGuess (lGuess, possibleSelections)
+          (fMatches,fLowerRank,fSameRank,fHigherRank,fSameSuit) =
+          (head updatedPossibleSelections,updatedPossibleSelections) where
+            cardsToGuess = length lGuess
+            updatedPossibleSelections =   filter (\x->
+              let (xMatches,xLowerRank,xSameRank,xHigherRank,xSameSuit) = feedback x lGuess in
+                  -- the last guess isn't a possible solution:
+                  x           /= lGuess &&
+                  -- exclude items that dont match feedback:
+                  xMatches    == fMatches &&
+                  xLowerRank  == fLowerRank &&
+                  xSameRank   == fSameRank &&
+                  xHigherRank == fHigherRank &&
+                  xSameSuit   == fSameSuit
+                ) possibleSelections
