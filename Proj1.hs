@@ -58,7 +58,7 @@ myintersect (x:xs) ys = if x `elem` ys
 
 
 initialGuess::Int -> ([Card], GameState)
-initialGuess numCards = ((space numCards allCards), combos numCards allCards) where
+initialGuess numCards = (space numCards allCards, combos numCards allCards) where
   combos :: Int -> [a] -> [[a]]
   combos 0 _ = [[]]
   combos n xs = [ y:ys | y:xs' <- tails xs, ys <- combos (n-1) xs']
@@ -78,7 +78,7 @@ eqSpace' numItemsWanted totalItems = [(round(dTotalItems/(dNumItemsWanted + 1.0)
   dNumItemsWanted = fromIntegral numItemsWanted :: Double
 
 
-space num lst = map fst $ filter ((\x-> x `elem` wantedIndexes).snd) indexed where
+space num lst = map fst $ filter ((`elem` wantedIndexes).snd) indexed where
       indexed = zip lst [0..]
       len = length lst
       wantedIndexes = eqSpace' num len
